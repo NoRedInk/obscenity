@@ -29,7 +29,12 @@ module Obscenity
       end
 
       def profane?(text)
-        !offensive(text).empty?
+        return false unless text.to_s.size >= 3
+        text.split.each do |piece|
+          next if piece =~ whitelist_pattern
+          return true if piece =~ blacklist_pattern
+        end
+        false
       end
 
       def sanitize(text)
