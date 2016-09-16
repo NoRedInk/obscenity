@@ -81,7 +81,7 @@ module Obscenity
 
       def offensive_word?(word)
         return false unless word.size >= 3
-        return false if word =~ whitelist_pattern
+        return false if !whitelist.empty? && word =~ whitelist_pattern
         return true if word =~ blacklist_pattern
         false
       end
