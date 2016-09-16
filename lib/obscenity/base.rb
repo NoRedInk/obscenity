@@ -21,11 +21,11 @@ module Obscenity
       end
 
       def blacklist_pattern
-        @blacklist_pattern ||= /\b(#{blacklist.map {|a| "(?:#{a})"}.join('|')})\b/i
+        @blacklist_pattern ||= /(\b|\W|\A)(#{blacklist.map {|a| "(?:#{Regexp.escape(a)})"}.join('|')})(\b|\W|\z)/i
       end
 
       def whitelist_pattern
-        @whitelist_pattern ||= /\b(#{whitelist.map {|a| "(?:#{a})"}.join('|')})\b/
+        @whitelist_pattern ||= /(\b|\W|\A)(#{whitelist.map {|a| "(?:#{Regexp.escape(a)})"}.join('|')})(\b|\W|\z)/
       end
 
       def profane?(text)

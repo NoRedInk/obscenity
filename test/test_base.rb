@@ -64,10 +64,19 @@ class TestBase < Test::Unit::TestCase
         end
       end
       context "with custom blacklist config including a short word" do
-        setup { Obscenity::Base.blacklist = ['as$'] }
+        setup { Obscenity::Base.blacklist = ['as'] }
         should "ignore short words" do
           assert !Obscenity::Base.profane?('such as you')
+        end
+      end
+      context "with custom blacklist config including a regexy word" do
+        setup { Obscenity::Base.blacklist = ['as$', 'a$s'] }
+        should "treat it as a raw string" do
+          assert !Obscenity::Base.profane?('such as you')
           assert !Obscenity::Base.profane?('as')
+          assert !Obscenity::Base.profane?('christmas')
+          assert Obscenity::Base.profane?('as$')
+          assert Obscenity::Base.profane?('a$s')
         end
       end
     end
