@@ -63,6 +63,13 @@ class TestBase < Test::Unit::TestCase
           assert !Obscenity::Base.profane?('biatch')
         end
       end
+      context "with custom blacklist config including a short word" do
+        setup { Obscenity::Base.blacklist = ['as$'] }
+        should "ignore short words" do
+          assert !Obscenity::Base.profane?('such as you')
+          assert !Obscenity::Base.profane?('as')
+        end
+      end
     end
     context "with whitelist" do
       context "without custom blacklist config" do
@@ -208,9 +215,9 @@ class TestBase < Test::Unit::TestCase
         end
       end
       context "with custom blacklist config" do
-        setup { Obscenity::Base.blacklist = ['yo', 'word'] }
+        setup { Obscenity::Base.blacklist = ['yoyo', 'word'] }
         should "return an array with the offensive words based on a custom list" do
-          assert_equal ['Yo', 'word,'], Obscenity::Base.offensive('Yo word, sup')
+          assert_equal ['Yoyo', 'word,'], Obscenity::Base.offensive('Yoyo word, sup')
           assert_equal [], Obscenity::Base.offensive('Hello world')
         end
       end
