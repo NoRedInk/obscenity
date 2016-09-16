@@ -21,15 +21,19 @@ module Obscenity
       end
 
       def blacklist_pattern
-        @blacklist_pattern ||= /\b(#{blacklist.map {|a| "(?:#{a})"}.join('|')})\b/i
+        @blacklist_pattern ||= /(\b|\W|\A)(#{blacklist.map {|a| "(?:#{Regexp.escape(a)})"}.join('|')})(\b|\W|\z)/i
       end
 
       def whitelist_pattern
-        @whitelist_pattern ||= /\b(#{whitelist.map {|a| "(?:#{a})"}.join('|')})\b/
+        @whitelist_pattern ||= /(\b|\W|\A)(#{whitelist.map {|a| "(?:#{Regexp.escape(a)})"}.join('|')})(\b|\W|\z)/
       end
 
       def profane?(text)
-        !offensive(text).empty?
+        return false unless text.to_s.size >= 3
+        text.split.each do |piece|
+          return true if offensive_word? piece
+        end
+        false
       end
 
       def sanitize(text)
@@ -49,8 +53,8 @@ module Obscenity
       def offensive(text)
         words = []
         return(words) unless text.to_s.size >= 3
-        blacklist.each do |foul|
-          words << foul if text =~ /\b#{foul}\b/i && !whitelist.include?(foul)
+        text.split.each do |piece|
+          words << piece if offensive_word? piece
         end
         words.uniq
       end
@@ -75,6 +79,12 @@ module Obscenity
         end
       end
 
+      def offensive_word?(word)
+        return false unless word.size >= 3
+        return false if !whitelist.empty? && word =~ whitelist_pattern
+        return true if word =~ blacklist_pattern
+        false
+      end
     end
   end
 end
