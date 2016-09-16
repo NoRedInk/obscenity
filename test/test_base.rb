@@ -203,14 +203,14 @@ class TestBase < Test::Unit::TestCase
           Obscenity::Base.whitelist = :default
         }
         should "return an array with the offensive words based on the default list" do
-          assert_equal ['assclown'], Obscenity::Base.offensive('Yo assclown, sup')
+          assert_equal ['assclown,'], Obscenity::Base.offensive('Yo assclown, sup')
           assert_equal [], Obscenity::Base.offensive('Hello world')
         end
       end
       context "with custom blacklist config" do
         setup { Obscenity::Base.blacklist = ['yo', 'word'] }
         should "return an array with the offensive words based on a custom list" do
-          assert_equal ['yo', 'word'], Obscenity::Base.offensive('Yo word, sup')
+          assert_equal ['Yo', 'word,'], Obscenity::Base.offensive('Yo word, sup')
           assert_equal [], Obscenity::Base.offensive('Hello world')
         end
       end
@@ -222,7 +222,7 @@ class TestBase < Test::Unit::TestCase
           Obscenity::Base.whitelist = ['biatch']
         }
         should "return an array with the offensive words based on the default blacklist and custom whitelist" do
-          assert_equal ['assclown'], Obscenity::Base.offensive('Yo assclown, sup')
+          assert_equal ['assclown,'], Obscenity::Base.offensive('Yo assclown, sup')
           assert_equal [], Obscenity::Base.offensive('Yo biatch, sup')
         end
       end
@@ -232,7 +232,7 @@ class TestBase < Test::Unit::TestCase
           Obscenity::Base.whitelist = ['biatch']
         }
         should "return an array with the offensive words based on the custom list" do
-          assert_equal ['clown'], Obscenity::Base.offensive('Yo clown, sup')
+          assert_equal ['clown,'], Obscenity::Base.offensive('Yo clown, sup')
           assert_equal [], Obscenity::Base.offensive('Yo biatch, sup')
         end
       end

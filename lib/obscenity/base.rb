@@ -31,8 +31,7 @@ module Obscenity
       def profane?(text)
         return false unless text.to_s.size >= 3
         text.split.each do |piece|
-          next if piece =~ whitelist_pattern
-          return true if piece =~ blacklist_pattern
+          return true if offensive_word? piece
         end
         false
       end
@@ -54,8 +53,8 @@ module Obscenity
       def offensive(text)
         words = []
         return(words) unless text.to_s.size >= 3
-        blacklist.each do |foul|
-          words << foul if text =~ /\b#{foul}\b/i && !whitelist.include?(foul)
+        text.split.each do |piece|
+          words << piece if offensive_word? piece
         end
         words.uniq
       end
@@ -80,6 +79,11 @@ module Obscenity
         end
       end
 
+      def offensive_word?(word)
+        return false if word =~ whitelist_pattern
+        return true if word =~ blacklist_pattern
+        false
+      end
     end
   end
 end
