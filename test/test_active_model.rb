@@ -1,7 +1,7 @@
 require 'helper'
 
-class TestActiveModel < Test::Unit::TestCase
-  
+class TestActiveModel < Minitest::Test
+
   def generate_new_class(name, options = {})
     Dummy.send(:remove_const, name) if Dummy.const_defined?(name)
     klass = Class.new(Dummy::BaseModel) do
@@ -33,7 +33,7 @@ class TestActiveModel < Test::Unit::TestCase
     assert !post.errors.has_key?(:title)
     assert_equal "He who poops, $@!#% itself", post.title
   end
-  
+
   should "sanitize the title using the :garbled replacement" do
     klass = generate_new_class("Post", obscenity: { sanitize: true, replacement: :garbled })
     post  = klass.new(title: "He who poops, shits itself")

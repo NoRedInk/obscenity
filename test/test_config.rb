@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestConfig < Test::Unit::TestCase
+class TestConfig < Minitest::Test
 
   context "#respond_to?" do
     should "respond to methods and attributes" do
@@ -11,18 +11,18 @@ class TestConfig < Test::Unit::TestCase
       end
     end
   end
-  
+
   should "properly set the config parameters" do
     blacklist   = ['ass', 'shit', 'penis']
     whitelist   = ['penis']
     replacement = :stars
-    
+
     config = Obscenity::Config.new do |config|
       config.blacklist   = blacklist
       config.whitelist   = whitelist
       config.replacement = replacement
     end
-    
+
     assert_equal blacklist, config.blacklist
     assert_equal whitelist, config.whitelist
     assert_equal replacement, config.replacement
@@ -32,7 +32,7 @@ class TestConfig < Test::Unit::TestCase
     config = Obscenity::Config.new
     assert_equal [], config.whitelist
     assert_equal :garbled, config.replacement
-    assert_match /config\/blacklist.yml/, config.blacklist
+    assert_match(%r{config/blacklist.yml}, config.blacklist)
   end
 
   should "return default values when default values are set" do
@@ -44,17 +44,17 @@ class TestConfig < Test::Unit::TestCase
     assert_equal :default, config.replacement
     assert_match /config\/blacklist.yml/, config.blacklist
   end
-  
+
   should "properly validate the config options" do
     [:blacklist, :whitelist].each do |field|
-      exceptions = [
-        [Obscenity::UnkownContent, {}], 
-        [Obscenity::UnkownContent, ":unkown"], 
-        [Obscenity::EmptyContentList, []], 
-        [Obscenity::UnkownContentFile, "'path/to/file'"], 
+      [
+        [Obscenity::UnkownContent, {}],
+        [Obscenity::UnkownContent, ":unkown"],
+        [Obscenity::EmptyContentList, []],
+        [Obscenity::UnkownContentFile, "'path/to/file'"],
         [Obscenity::UnkownContentFile, Pathname.new("'path/to/file'")]
       ].each do |klass, value|
-        assert_raise(klass){
+        assert_raises(klass){
           Obscenity::Config.new do |config|
             config.instance_eval "config.#{field} = #{value}"
           end
@@ -62,5 +62,5 @@ class TestConfig < Test::Unit::TestCase
       end
     end
   end
-  
+
 end

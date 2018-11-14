@@ -2,7 +2,7 @@ require 'helper'
 require 'rack/mock'
 require 'obscenity/rack'
 
-class TestRack < Test::Unit::TestCase
+class TestRack < Minitest::Test
 
   context "Rack::Obscenity" do
     setup do
@@ -60,14 +60,14 @@ class TestRack < Test::Unit::TestCase
 
       should "reject if GET parameter values contain profanity" do
         app = middleware(reject: true)
-        status, headers, body = app.call(mock_env(get(foo: 'bar', baz: 'shit')))
+        status, _headers, body = app.call(mock_env(get(foo: 'bar', baz: 'shit')))
         assert_equal 422, status
         assert_equal [''], body
       end
 
       should "reject if POST parameter values contain profanity" do
         app = middleware(reject: true)
-        status, headers, body = app.call(mock_env(post(foo: 'bar', baz: 'ass')))
+        status, _headers, body = app.call(mock_env(post(foo: 'bar', baz: 'ass')))
         assert_equal 422, status
         assert_equal [''], body
       end
@@ -77,7 +77,7 @@ class TestRack < Test::Unit::TestCase
         [ get(foo: 'ass', baz: 'shit'),
           post(foo: 'ass').merge(get(foo: 'nice', baz: 'shit'))
         ].each do |options|
-          status, headers, body = app.call(mock_env(options))
+          status, _headers, body = app.call(mock_env(options))
           assert_equal 422, status
           assert_equal [''], body
         end
@@ -91,28 +91,28 @@ class TestRack < Test::Unit::TestCase
 
       should "reject if parameter values contain profanity" do
         app = middleware(reject: { params: :all })
-        status, headers, body = app.call(mock_env(get(foo: 'ass')))
+        status, _headers, body = app.call(mock_env(get(foo: 'ass')))
         assert_equal 422, status
         assert_equal [''], body
       end
 
       should "reject if parameter values contain profanity and display a custom message" do
         app = middleware(reject: { message: "We don't accept profanity" })
-        status, headers, body = app.call(mock_env(get(foo: 'ass')))
+        status, _headers, body = app.call(mock_env(get(foo: 'ass')))
         assert_equal 422, status
         assert_equal ["We don't accept profanity"], body
       end
 
       should "reject if parameter values contain profanity and render a custom file" do
         app = middleware(reject: { path: "test/static/422.html" })
-        status, headers, body = app.call(mock_env(get(foo: 'ass')))
+        status, _headers, body = app.call(mock_env(get(foo: 'ass')))
         assert_equal 422, status
         assert_equal ["We don't accept profanity"], body
       end
 
       should "reject parameter values when they're a hash and contain profanity" do
         app = middleware(reject: true)
-        status, headers, body = app.call(mock_env(get(foo: 'clean', bar: {one: 'ass'})))
+        status, _headers, body = app.call(mock_env(get(foo: 'clean', bar: {one: 'ass'})))
         assert_equal 422, status
         assert_equal [''], body
       end
@@ -203,5 +203,4 @@ class TestRack < Test::Unit::TestCase
       end
     end
   end
-
 end

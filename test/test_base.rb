@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestBase < Test::Unit::TestCase
+class TestBase < Minitest::Test
 
   context "#respond_to?" do
     should "respond to methods and attributes" do
