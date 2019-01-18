@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestVersion < Test::Unit::TestCase
+class TestVersion < MiniTest::Test
 
   should "return the correct product version" do
     assert_equal '1.0.2', Obscenity::VERSION
