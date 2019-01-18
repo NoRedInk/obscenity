@@ -7,7 +7,7 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
-require 'test/unit'
+require 'minitest'
 require 'shoulda'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
@@ -20,7 +20,7 @@ require 'obscenity/active_model'
 module Dummy
   class BaseModel
     include ActiveModel::Validations
-  
+
     attr_accessor :title
 
     def initialize(attr_names)
@@ -29,5 +29,5 @@ module Dummy
   end
 end
 
-class Test::Unit::TestCase
+class MiniTest::Test
 end

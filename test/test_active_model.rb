@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestActiveModel < Test::Unit::TestCase
+class TestActiveModel < MiniTest::Test
   
   def generate_new_class(name, options = {})
     Dummy.send(:remove_const, name) if Dummy.const_defined?(name)

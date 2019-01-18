@@ -2,7 +2,7 @@ require 'helper'
 require 'rack/mock'
 require 'obscenity/rack'
 
-class TestRack < Test::Unit::TestCase
+class TestRack < MiniTest::Test
 
   context "Rack::Obscenity" do
     setup do

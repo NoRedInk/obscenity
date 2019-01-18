@@ -36,6 +36,7 @@ GEM
       rdoc
     json (1.8.6)
     jwt (2.1.0)
+    minitest (5.11.3)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (1.2.0)
@@ -64,6 +65,7 @@ DEPENDENCIES
   activemodel (~> 3.2, >= 3.2.3)
   bundler
   jeweler (~> 1.8.3)
+  minitest
   rack
   rake
   rdoc (~> 3.12)

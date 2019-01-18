@@ -8,4 +8,5 @@ group :development do
   gem "activemodel", "~> 3.2", ">= 3.2.3"
   gem "rack"
   gem "rake"
+  gem "minitest"
 end
