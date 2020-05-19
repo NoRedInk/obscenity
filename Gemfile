@@ -1,11 +1,11 @@
 source "http://rubygems.org"
 
 group :development do
-  gem "shoulda", ">= 0"
+  gem "shoulda", ">= 3.5.0"
   gem "rdoc", "~> 3.12"
   gem "bundler"
   gem "jeweler", "~> 2.0.1"
-  gem "activemodel", "~> 3.2", ">= 3.2.3"
+  gem "activemodel", "~> 5.2", ">= 5.2.4.3"
   gem "rack", ">= 2.0.8"
   gem "rake"
   gem "minitest"
